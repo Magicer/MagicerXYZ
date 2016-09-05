@@ -6,7 +6,7 @@
  # - npm install
 language: node_js
 node_js:
-  - "0.12"
+  - "4.4.4"
 install:
   - npm install hexo-cli -g
   - npm install hexo --save
