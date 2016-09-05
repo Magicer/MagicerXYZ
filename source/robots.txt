@@ -1,0 +1,16 @@
+# robots.txt  
+User-agent: *
+Disallow: 
+Disallow: /wordpress/
+Disallow: /wp-content/
+Disallow: /css/
+Disallow: image_code/
+Disallow: /fonts/
+Disallow: /image/
+Disallow: /images/
+Disallow: /js/
+Disallow: /vendors/
+Disallow: /music/
+Sitemap: http://m.magicer.xyz/sitemap.xml
+Sitemap: http://me.magicer.xyz/sitemap.xml
+Sitemap: http://m.magicer.xyz/atom.xml

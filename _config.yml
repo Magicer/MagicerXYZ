@@ -1,0 +1,105 @@
+# Hexo Configuration
+## Docs: http://hexo.io/docs/configuration.html
+## Source: https://github.com/hexojs/hexo/
+
+# Site
+title: Magicer
+name: Magicer
+subtitle: Magicer
+description:  记录学习中遇到的问题
+mydescription:  Magicer's Blog 主要是Android学习博客还有部分hexo的相关内容
+author: Magicer
+language: zh-Hans
+timezone:
+
+# URL
+## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
+url: http://m.magicer.xyz
+root: /
+permalink: :year/:month/:title/
+permalink_defaults:
+
+# Directory
+source_dir: source
+public_dir: public
+tag_dir: tags
+archive_dir: archives
+category_dir: categories
+code_dir: downloads/code
+i18n_dir: :language
+skip_render:
+
+# Writing
+new_post_name: :title.md # File name of new posts
+default_layout: post
+titlecase: false # Transform title into titlecase
+external_link: true # Open external links in new tab
+filename_case: 0
+render_drafts: false
+post_asset_folder: false
+relative_link: false
+future: true
+highlight:
+  enable: true	
+  line_number: true
+  tab_replace:
+
+# Category & Tag
+default_category: uncategorized
+category_map:
+tag_map:
+skip_render: README.md
+# Date / Time format
+## Hexo uses Moment.js to parse and display date
+## You can customize the date format as defined in
+## http://momentjs.com/docs/#/displaying/format/
+date_format: YYYY-MM-DD
+time_format: HH:mm:ss
+
+# Pagination
+## Set per_page to 0 to disable pagination
+per_page: 8
+pagination_dir: page
+
+
+port: 4001
+server_ip: localhost
+logger: false
+logger_format: dev
+
+##duoshuo_shortname: magicer_zhang
+plugins:
+ - hexo-generator-feed
+ - hexo-generator-sitemap
+ - hexo-deployer-git
+ - hexo-deployer-rsync  
+sitemap:
+    path: sitemap.xml
+
+feed:
+  type: atom
+  path: atom.xml
+  limit: 20
+# Extensions
+## Plugins: http://hexo.io/plugins/
+## Themes: http://hexo.io/themes/
+theme: next
+
+# Deployment ## Docs: http://hexo.io/docs/deployment.html 
+# deploy:   
+#   type: git
+#   message: 
+#   repo: 
+#       gitcafe: git@git.coding.net:Magicer/Blog.git  ,coding-pages
+#       github: git@github.com:Magicer/Magicer.github.io.git ,master
+
+# messenge: # github: git@github.com:Magicer/Magicer.github.io.git
+deploy:
+ type: git
+ message: 
+ repo: 
+   github: git@github.com:Magicer/Magicer.github.io.git  
+   coding: git@git.coding.net:Magicer/Magicer.git,coding-pages
+ 
+    
+
