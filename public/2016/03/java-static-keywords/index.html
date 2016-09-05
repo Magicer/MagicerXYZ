@@ -1,0 +1,863 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="static," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Magicer" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/icon.png##/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="在了解static之前 ，先来了解下this关键字。多少有点渊源；首先 this是什么意识呢？this指代当前的对象 用法如下：
+this关键字this指代当前对象  123456789101112 public class Cirlcle &amp;#123;final static double PI=3.14;double radius;Point point;public Cirlcle()&amp;#1">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java static关键字及静态代码块的使用">
+<meta property="og:url" content="http://m.magicer.xyz/2016/03/java-static-keywords/index.html">
+<meta property="og:site_name" content="Magicer">
+<meta property="og:description" content="在了解static之前 ，先来了解下this关键字。多少有点渊源；首先 this是什么意识呢？this指代当前的对象 用法如下：
+this关键字this指代当前对象  123456789101112 public class Cirlcle &amp;#123;final static double PI=3.14;double radius;Point point;public Cirlcle()&amp;#1">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java static关键字及静态代码块的使用">
+<meta name="twitter:description" content="在了解static之前 ，先来了解下this关键字。多少有点渊源；首先 this是什么意识呢？this指代当前的对象 用法如下：
+this关键字this指代当前对象  123456789101112 public class Cirlcle &amp;#123;final static double PI=3.14;double radius;Point point;public Cirlcle()&amp;#1">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 10239987,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> Java static关键字及静态代码块的使用 | Magicer </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', '62087510-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=55690660";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Magicer</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">Magicer</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Java static关键字及静态代码块的使用
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-03-08T19:41:04+08:00" content="2016-03-08">
+              2016-03-08
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/03/java-static-keywords/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/03/java-static-keywords/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/03/java-static-keywords/" class="leancloud_visitors" data-flag-title="Java static关键字及静态代码块的使用">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>  在了解static之前 ，先来了解下this关键字。多少有点渊源；首先 this是什么意识呢？this指代当前的对象 用法如下：</p>
+<h1 id="this关键字">this关键字</h1><h2 id="this指代当前对象">this指代当前对象</h2>  <figure class="highlight processing"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">public</span> class Cirlcle &#123;</span><br><span class="line"><span class="keyword">final</span> <span class="keyword">static</span> <span class="keyword">double</span> <span class="constant">PI</span>=<span class="number">3.14</span>;</span><br><span class="line"><span class="keyword">double</span> radius;</span><br><span class="line">Point <span class="built_in">point</span>;</span><br><span class="line"><span class="keyword">public</span> Cirlcle()&#123;</span><br><span class="line">	</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> Cirlcle(<span class="keyword">double</span> radius,Point <span class="built_in">point</span>)&#123;</span><br><span class="line">	<span class="keyword">this</span>.radius=radius;</span><br><span class="line">	<span class="keyword">this</span>.<span class="built_in">point</span>=<span class="built_in">point</span>;</span><br><span class="line">&#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p>  在此程序中this指代当前对象，如果不加上this时，将无法达到预期的效果，因为形式参数radius的作用域只在方法里，当加上this时代表的是当前对象的radius，所以此时可以达到为对象的域赋值的作用。</p>
+<p>  this只能在方法内部使用，表示对”调用方法的那个对象“的引用，如果在方法内部调用同一个类的另一个方法则不用用this，直接调用即可。只有需要明确指出对当前对象的引用时，才需要使用this关键字。</p>
+<h2 id="this调用构造器">this调用构造器</h2><pre><code>还是那个程序：
+
+<span class="comment"><figure class="highlight processing"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">   <span class="keyword">public</span> class Cirlcle &#123;</span><br><span class="line"><span class="keyword">final</span> <span class="keyword">static</span> <span class="keyword">double</span> <span class="constant">PI</span>=<span class="number">3.14</span>;</span><br><span class="line"><span class="keyword">double</span> radius;</span><br><span class="line">Point <span class="built_in">point</span>;</span><br><span class="line"><span class="keyword">public</span> Cirlcle(<span class="keyword">double</span> radius)&#123;	</span><br><span class="line">	<span class="keyword">this</span>(radius,<span class="keyword">null</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> Cirlcle(<span class="keyword">double</span> radius,Point <span class="built_in">point</span>)&#123;</span><br><span class="line">	<span class="keyword">this</span>.radius=radius;</span><br><span class="line">	<span class="keyword">this</span>.<span class="built_in">point</span>=<span class="built_in">point</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></span>
+</code></pre><p>  在重载的一个参数的构造器中就调用了另一个构造器Cirlcle(double radius,Point point)，利用次构造器来在当前构造器中对域进行初始化工作。<br>  但是此时要注意的是，this()必须放在方法的第一行。</p>
+<p>  this还有另外一个用法，即用在return语句上。</p>
+  <figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">  <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Book</span> &#123;</span><br><span class="line">	String name;</span><br><span class="line">	<span class="keyword">double</span> price;</span><br><span class="line">	<span class="keyword">int</span> id;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> Book <span class="title">printPrice</span><span class="params">()</span></span>&#123;</span><br><span class="line">		price=<span class="number">100.0</span>;</span><br><span class="line">		System.<span class="keyword">out</span>.println(<span class="string">"Book price:"</span>+price);</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">this</span>;	<span class="comment">//返回对当前对象的引用</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> Book <span class="title">printName</span><span class="params">()</span></span>&#123;</span><br><span class="line">		name=<span class="string">"Thinking in Java"</span>;</span><br><span class="line">		System.<span class="keyword">out</span>.println(<span class="string">"Book name:"</span>+name);</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">this</span>;   <span class="comment">//返回对当前对象的引用</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		Book book = <span class="keyword">new</span> Book();</span><br><span class="line">		book.printName().printPrice();</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>  在方法中由于利用return返回了对当前对象的引用，所以可以使用<code>.</code>来执行多条语句</p>
+<p>   接下来，就要来讲解static的用法了。准备好了么？</p>
+<h1 id="static关键字">static关键字</h1><p>static：静态；</p>
+<h2 id="static域">static域</h2><p>static域是所有对象所共有的，是属于类所有，而不是特定的对象。当对其进行<br>我们还是用上面的程序，例如：书都是一个特定图书馆的，所以此时我们就可以定义一个static类型的域来表明所有的Book都是国家图书馆的。<br>此时我们就可以这样定义：</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Book</span> &#123;</span><br><span class="line">	<span class="keyword">static</span> String library=<span class="string">"国家图书馆"</span>; <span class="comment">//static域</span></span><br><span class="line">	String name;</span><br><span class="line">	<span class="keyword">double</span> price;</span><br><span class="line">	<span class="keyword">int</span> id;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> Book <span class="title">printPrice</span><span class="params">()</span></span>&#123;</span><br><span class="line">		price=<span class="number">100.0</span>;</span><br><span class="line">		System.<span class="keyword">out</span>.println(<span class="string">"Book price:"</span>+price);</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> Book <span class="title">printName</span><span class="params">()</span></span>&#123;</span><br><span class="line">		name=<span class="string">"Thinking in Java"</span>;</span><br><span class="line">		System.<span class="keyword">out</span>.println(<span class="string">"Book name:"</span>+name);</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		Book book = <span class="keyword">new</span> Book();</span><br><span class="line">		book.printName().printPrice();</span><br><span class="line">		System.<span class="keyword">out</span>.println(<span class="string">"library:"</span>+Book.library);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当定义了static域之后我们就可以用 <code>类名.域</code> 来的到该值<br>static域在内存中有一块特定的内存，每个对象所公用，当在一个对象中对其进行了修改，则其他对象的词域也会被修改。<br><strong>notes</strong>:构造器中不要有static域；</p>
+<h2 id="static方法">static方法</h2><p> 利用static修饰的方法就是static方法；最典型的就是main()<br> static字段对于每个对象都是公用的同一块内存区域。而static方法的一个最主要的用法是在没有创建对象的情况下调用方法。<br> static方法就是没有this的方法（也没有super），而且在static的内部不能调用非静态方法和非静态域；</p>
+<p> 在上面的代码中添加<br> <figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span>  <span class="title">printInfo</span><span class="params">()</span></span>&#123;</span><br><span class="line">	System.<span class="keyword">out</span>.println(name+price); <span class="comment">//error 静态方法中不能调用非静态域</span></span><br><span class="line">	printName();   <span class="comment">//error 静态方法中不能调用非静态方法</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="static代码块">static代码块</h2><p> 代码块是用{}括起来的部分；在方法中的是一般代码块，在类中声明的一般代码块就是构造代码块。而用static修饰的代码块就是静态代码块；当然还有同步代码块，现在就不做介绍了。<br> 接下来我们来看个程序：</p>
+ <figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Book</span> &#123;</span><br><span class="line">	</span><br><span class="line">	&#123; </span><br><span class="line">		System.<span class="keyword">out</span>.println(<span class="string">"构造代码块"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">static</span>&#123;</span><br><span class="line">		System.<span class="keyword">out</span>.println(<span class="string">"静态代码块"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		&#123;</span><br><span class="line">			System.<span class="keyword">out</span>.println(<span class="string">"一般代码块"</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p> 此程序的运行结果为：</p>
+ <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">静态代码块</span><br><span class="line">一般代码块</span><br></pre></td></tr></table></figure>
+<p>我们可以看到，最先执行的是静态代码块。而不是在main()方法中的一般代码块。<br>静态代码块是最先执行的，以载入类就执行了。</p>
+<p>再看下面的程序：</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Book</span> &#123;</span><br><span class="line">	</span><br><span class="line">	&#123; </span><br><span class="line">		System.<span class="keyword">out</span>.println(<span class="string">"构造代码块"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">static</span>&#123;</span><br><span class="line">		System.<span class="keyword">out</span>.println(<span class="string">"静态代码块"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		&#123;</span><br><span class="line">			System.<span class="keyword">out</span>.println(<span class="string">"一般代码块"</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">new</span> Book();   <span class="comment">//添加了一行</span></span><br><span class="line">		<span class="keyword">new</span> Book();   <span class="comment">//添加了一行</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>而此时的运行结果是：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">静态代码块</span><br><span class="line">一般代码块</span><br><span class="line">构造代码块</span><br><span class="line">构造代码块</span><br></pre></td></tr></table></figure>
+<p>可以看到，构造代码块只有在创建对象的时候才会执行。</p>
+<p>构造代码块跟构造器又是那个先执行的呢？<br>来看下面的代码：</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Book</span> &#123;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">Book</span><span class="params">()</span></span>&#123;</span><br><span class="line">		System.<span class="keyword">out</span>.println(<span class="string">"构造器"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">static</span>&#123;</span><br><span class="line">		System.<span class="keyword">out</span>.println(<span class="string">"静态代码块#####"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	&#123; </span><br><span class="line">		System.<span class="keyword">out</span>.println(<span class="string">"构造代码块#####"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	&#123; </span><br><span class="line">		System.<span class="keyword">out</span>.println(<span class="string">"构造代码块"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">static</span>&#123;</span><br><span class="line">		System.<span class="keyword">out</span>.println(<span class="string">"静态代码块"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		&#123;</span><br><span class="line">			System.<span class="keyword">out</span>.println(<span class="string">"一般代码块"</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">new</span> Book();</span><br><span class="line">		<span class="keyword">new</span> Book();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果是：<br><figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">静态代码块<span class="preprocessor">#####</span></span><br><span class="line">静态代码块</span><br><span class="line">一般代码块</span><br><span class="line">构造代码块<span class="preprocessor">#####</span></span><br><span class="line">构造代码块</span><br><span class="line">构造器</span><br><span class="line">构造代码块<span class="preprocessor">#####</span></span><br><span class="line">构造代码块</span><br><span class="line">构造器</span><br></pre></td></tr></table></figure></p>
+<p>通过运行结果可以看到，最先执行的是静态代码块并且靠上的静态代码块先执行，然后是一般代码块,然后是构造代码块，靠上的先执行，然后才是构造器；</p>
+<p>那么下面的顺序呢？运行结果是？</p>
+<figure class="highlight ocaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> <span class="type">Book</span><span class="literal">()</span>;</span><br><span class="line"><span class="keyword">new</span> <span class="type">Book</span><span class="literal">()</span>;</span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">System</span>.out.println(<span class="string">"一般代码块"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果是：<br><figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">静态代码块<span class="preprocessor">#####</span></span><br><span class="line">静态代码块</span><br><span class="line">构造代码块<span class="preprocessor">#####</span></span><br><span class="line">构造代码块</span><br><span class="line">构造器</span><br><span class="line">构造代码块<span class="preprocessor">#####</span></span><br><span class="line">构造代码块</span><br><span class="line">构造器</span><br><span class="line">一般代码块</span><br></pre></td></tr></table></figure></p>
+<p>显而易见了，先创建对象就先执行构造代码块构造器，然后是一般代码块，按顺序执行，谁靠上谁先执行。</p>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/static/" rel="tag">#static</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/03/Java-Jsoup-jar-1/" rel="next" title="Jsoup.jar的使用">
+                <i class="fa fa-chevron-left"></i> Jsoup.jar的使用
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/03/bubble-selection-insert-sort-1/" rel="prev" title="Java插入排序，选择排序和冒泡排序的简单使用">
+                Java插入排序，选择排序和冒泡排序的简单使用 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!--MOB SHARE BEGIN-->
+                            <div class="-mob-share-ui-button -mob-share-open">分享</div>
+                            <div class="-mob-share-ui" style="display: none">
+                                <ul class="-mob-share-list">
+                                    <li class="-mob-share-weibo"><p>新浪微博</p></li>
+                                    <li class="-mob-share-tencentweibo"><p>腾讯微博</p></li>
+                                    <li class="-mob-share-qzone"><p>QQ空间</p></li>
+                                    <li class="-mob-share-qq"><p>QQ好友</p></li>
+                                    <li class="-mob-share-weixin"><p>微信</p></li>
+                                    <li class="-mob-share-douban"><p>豆瓣</p></li>
+                                    <li class="-mob-share-renren"><p>人人网</p></li>
+                                    <li class="-mob-share-kaixin"><p>开心网</p></li>
+                                    <li class="-mob-share-facebook"><p>Facebook</p></li>
+                                    <li class="-mob-share-twitter"><p>Twitter</p></li>
+                                    <li class="-mob-share-pocket"><p>Pocket</p></li>
+                                    <li class="-mob-share-google"><p>Google+</p></li>
+                                    <li class="-mob-share-youdao"><p>有道云笔记</p></li>
+                                    <li class="-mob-share-mingdao"><p>明道</p></li>
+                                    <li class="-mob-share-pengyou"><p>朋友网</p></li>
+                                    <li class="-mob-share-tumblr"><p>Tumblr</p></li>
+                                    <li class="-mob-share-instapaper"><p>Instapaper</p></li>
+                                    <li class="-mob-share-linkedin"><p>LinkedIn</p></li>
+                                </ul>
+                                <div class="-mob-share-close">取消</div>
+                            </div>
+                            <div class="-mob-share-ui-bg"></div>
+                            <script id="-mob-share"
+                            src="http://f1.webshare.mob.com/code/mob-share.js?appkey=11eb1336d7f8d"></script>
+                            <!--MOB SHARE END-->
+
+                        
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/03/java-static-keywords/"
+           data-title="Java static关键字及静态代码块的使用" data-url="http://m.magicer.xyz/2016/03/java-static-keywords/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="Magicer" />
+          <p class="site-author-name" itemprop="name">Magicer</p>
+          <p class="site-description motion-element" itemprop="description">记录学习中遇到的问题</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">44</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">25</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Magicer" target="_blank">
+                  
+                    <i class="fa fa-globe"></i>
+                  
+                  github
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://twitter.com/Captain_Magicer" target="_blank">
+                  
+                    <i class="fa fa-globe"></i>
+                  
+                  twitter
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/3681817060" target="_blank">
+                  
+                    <i class="fa fa-globe"></i>
+                  
+                  weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        <div class="links-of-blogroll motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#this关键字"><span class="nav-number">1.</span> <span class="nav-text">this关键字</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#this指代当前对象"><span class="nav-number">1.1.</span> <span class="nav-text">this指代当前对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#this调用构造器"><span class="nav-number">1.2.</span> <span class="nav-text">this调用构造器</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#static关键字"><span class="nav-number">2.</span> <span class="nav-text">static关键字</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#static域"><span class="nav-number">2.1.</span> <span class="nav-text">static域</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#static方法"><span class="nav-number">2.2.</span> <span class="nav-text">static方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#static代码块"><span class="nav-number">2.3.</span> <span class="nav-text">static代码块</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+<div class="copyright" >
+  
+  &copy;  2014 - 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Magicer</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+<span id="busuanzi_container_site_pv">
+  &nbsp&nbsp&nbsp|&nbsp&nbsp&nbsp  总访问<span id="busuanzi_value_site_pv"></span> 次
+</span>
+<span id="busuanzi_container_site_uv">&nbsp&nbsp&nbsp|&nbsp&nbsp&nbsp  
+  您是本站第<span id="busuanzi_value_site_uv"></span>位访客
+</span>
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"magicerblog"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+      
+      <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+      <script src="/js/src/hook-duoshuo.js"></script>
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("uGLqj2i7uNm869NacXqpKs0Q-gzGzoHsz", "QKlx4tW4OdkfqKRHWqFbA4xq");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script type="text/javascript" async src="//push.zhanzhang.baidu.com/push.js">
+</script>
+
+
+</body>
+</html>
